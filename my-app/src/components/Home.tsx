@@ -3,12 +3,28 @@ import { useState, ChangeEvent } from "react";
 
 const Home = (): JSX.Element => {
 
-    const [location, setLocation] = useState('')
+    const [location, setLocation] = useState<string>('')
+    const [options, setOptions] = useState<[]>([])
+    const [results, setResults] = useState<any>({})
+
+    let limit = 5
+    const fetchSearchOptions = (value:string) => {
+        fetch(`https://api.mapbox.com/search/geocode/v6/forward?q=${value}
+            &limit=${limit}&access_token=pk.eyJ1IjoiamFjb2JpcmVsYW5kIiwiYSI6ImNsemhyYmt3YTA4YW4ycXE4Mm81cm5tc2UifQ.4QHayx7BzuL4AYXv2HDXtg`
+        )
+        .then((res) => res.json())
+        .then((data) => setResults(data))
+
+    }
 
     const inputChange = (e:ChangeEvent<HTMLInputElement>) => {
-        setLocation(e.target.value)
-        
+        const loc = e.target.value
+        setLocation(loc)
+        if (loc.trim() === '') return
+        console.log('search: ' + loc)
+        fetchSearchOptions(loc)
     }
+
 
     return (
         <section className="flex flex-col w-full max-w-[350px] md:max-w-[700px]
@@ -37,6 +53,8 @@ const Home = (): JSX.Element => {
                     md:text-[2vh] hover:scale-125"/>
                 </button>
             </div>
+
+            
 
         </section>
     )

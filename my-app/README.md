@@ -4,6 +4,11 @@ npm install react-icons --save
 npm install openmeteo
 
 
+APIs:
+https://open-meteo.com/en/docs#current=&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,uv_index&daily=&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&forecast_days=1
+
+https://openweathermap.org/api/geocoding-api#direct
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
