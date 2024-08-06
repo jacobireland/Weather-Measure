@@ -46,7 +46,7 @@ const Home = (): JSX.Element => {
     }
 
     const onSearchEnter = () => {
-
+        console.log("Get weather data!")
     }
     
     return (
