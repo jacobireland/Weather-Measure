@@ -1,7 +1,7 @@
 App isntalls:
 
 npm install react-icons --save
-
+npm install openmeteo
 
 
 # Getting Started with Create React App
