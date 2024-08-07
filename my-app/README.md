@@ -2,6 +2,8 @@ App isntalls:
 
 npm install react-icons --save
 npm install openmeteo
+npm install react-router-dom
+npm install @types/react-router-dom
 
 
 APIs:

@@ -1,6 +1,7 @@
 import { CiSearch } from "react-icons/ci";
 import { useState, useEffect, ChangeEvent } from "react";
 import { optionType } from "../types";
+import { useNavigate } from 'react-router-dom';
 
 const Home = (): JSX.Element => {
     const [location, setLocation] = useState<optionType>({properties:{name:'',
@@ -11,10 +12,9 @@ const Home = (): JSX.Element => {
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setLocation({properties:{name: `${e.target.value}`,
             coordinates:{latitude:'', longitude:''}}})
-        console.log('name: ' + location.properties.name)
-        console.log('lat: ' + location.properties.coordinates.latitude)
-        console.log('long: ' + location.properties.coordinates.longitude)
     }
+
+    const navigate = useNavigate()
     
     //get auto-complete search options from API call
     useEffect(() => {
@@ -26,7 +26,6 @@ const Home = (): JSX.Element => {
                   + `zuL4AYXv2HDXtg`
             )
             const data = await res.json()
-            console.log(data)
             setOptions(data)
         }
 
@@ -39,14 +38,34 @@ const Home = (): JSX.Element => {
     }, [location]);
 
     const onOptionSelect = (option:optionType) => {
-        console.log(option)
         setLocation({properties:{name: option.properties.name,
             coordinates:{latitude:option.properties.coordinates.latitude,
             longitude:option.properties.coordinates.longitude}}})
     }
 
     const onSearchEnter = () => {
-        console.log("Get weather data!")
+        if (options.features[0].properties.name === '') {
+            console.log("Search bar empty")
+            return
+        }
+        else if (location.properties.coordinates.latitude === '') {
+            console.log("Nothing selected, choosing first option")
+            let tLoc = {properties:{name:options.features[0].properties.name,
+                coordinates:{latitude:options.features[0].properties.coordinates
+                .latitude, longitude:options.features[0].properties.coordinates.
+                longitude}
+            }}
+            navigate('forecast', {state:{location:tLoc}})
+        } else {
+            navigate('forecast', {state:{location}})
+        }
+    }
+
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            if (location.properties.name !== '')
+            onSearchEnter()
+        }
     }
     
     return (
@@ -68,6 +87,7 @@ const Home = (): JSX.Element => {
                     type="text"
                     value={location.properties.name}
                     onChange={onInputChange}
+                    onKeyDown={handleKeyDown}
                     className="h-[3vh] w-[60vw] md:max-w-[500px] z-auto pl-[4px]
                     mr-[4px]"
                 />
@@ -96,6 +116,6 @@ const Home = (): JSX.Element => {
 
         </section>
     )
-  }
+}
   
-  export default Home;
+export default Home;
