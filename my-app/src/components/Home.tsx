@@ -2,6 +2,7 @@ import { CiSearch } from "react-icons/ci";
 import { useState, useEffect, ChangeEvent } from "react";
 import { optionType } from "../types";
 import { useNavigate } from 'react-router-dom';
+import { features } from "process";
 
 const Home = (): JSX.Element => {
     const [location, setLocation] = useState<optionType>({properties:{name:'',
@@ -9,14 +10,16 @@ const Home = (): JSX.Element => {
     const [options, setOptions] = useState<any>({features:[{properties:{name:'',
         coordinates:{latitude:'', longitude:''}}}]})
     
+    // update location variable upon user input
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setLocation({properties:{name: `${e.target.value}`,
             coordinates:{latitude:'', longitude:''}}})
     }
 
+    // for routing
     const navigate = useNavigate()
     
-    //get auto-complete search options from API call
+    // get auto-complete search options from API call
     useEffect(() => {
         const fetchSearchOptions = async (value:string) => {
             const res = await 
@@ -29,20 +32,27 @@ const Home = (): JSX.Element => {
             setOptions(data)
         }
 
+        // don't call API if input is empty
         if (location.properties.name.trim() !== '') {
             fetchSearchOptions(location.properties.name.trim());
         } else {
             setOptions({features:[{properties:{name:'',
                 coordinates:{latitude:'', longitude:''}}}]})
         }
+
     }, [location]);
 
+    // update location variable upon user selecting autofill option
     const onOptionSelect = (option:optionType) => {
         setLocation({properties:{name: option.properties.name,
             coordinates:{latitude:option.properties.coordinates.latitude,
             longitude:option.properties.coordinates.longitude}}})
+        
+        setOptions({features:[{properties:{name:'',
+            coordinates:{latitude:'', longitude:''}}}]})
     }
 
+    // route to forecast page when user enters search
     const onSearchEnter = () => {
         if (options.features[0].properties.name === '') {
             console.log("Search bar empty")
@@ -61,6 +71,7 @@ const Home = (): JSX.Element => {
         }
     }
 
+    // allow user to enter search with 'Enter' key
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             if (location.properties.name !== '')
@@ -91,7 +102,7 @@ const Home = (): JSX.Element => {
                     className="h-[3vh] w-[60vw] md:max-w-[500px] z-auto pl-[4px]
                     mr-[4px]"
                 />
-                {location.properties.name ?
+                {location.properties.name.trim() ?
                     <ul className="absolute top-9 left-0 bg-white 
                     rounded-b-md">
                         {options['features'].map((option: optionType,
@@ -113,7 +124,6 @@ const Home = (): JSX.Element => {
                     onSearchEnter()}/>
                 </button>
             </div>
-
         </section>
     )
 }
