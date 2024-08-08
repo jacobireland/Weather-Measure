@@ -98,9 +98,11 @@ const Forecast = () : JSX.Element => {
             <h1>Located at: {lat}, {long}</h1>
             <h1>Data is: 
                 {weatherData ? 
-                    <ul>
+                    <ul className="flex overflow-x-auto bg-nonerounded-b-md w-[30vh]">
                         {weatherData['hourly']['temperature2m'].map((temp: number, index: number) => (
-                            <li key={index}>
+                            <li key={index} className="text-left text-sm w-full 
+                            cursor-pointer hover:text-white 
+                            hover:bg-slate-500 px-2 py-1" >
                                 {Math.round(temp)}°F
                             </li>
                         ))}
