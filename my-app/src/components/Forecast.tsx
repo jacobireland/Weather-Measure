@@ -17,9 +17,8 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
         "temperature_unit": "fahrenheit",
         "wind_speed_unit": "mph",
         "precipitation_unit": "inch",
-        "timezone":"auto",
-        "past_hours": 1,
-        "forecast_hours": 24
+        "past_hours": 0,
+        "forecast_hours": 25
     };
 
     let weatherData
@@ -98,12 +97,19 @@ const Forecast = () : JSX.Element => {
             <h1>Located at: {lat}, {long}</h1>
             <h1>Data is: 
                 {weatherData ? 
-                    <ul className="flex overflow-x-auto bg-nonerounded-b-md w-[30vh]">
-                        {weatherData['hourly']['temperature2m'].map((temp: number, index: number) => (
-                            <li key={index} className="text-left text-sm w-full 
-                            cursor-pointer hover:text-white 
-                            hover:bg-slate-500 px-2 py-1" >
-                                {Math.round(temp)}°F
+                    <ul className="flex overflow-x-auto bg-none rounded-b-md 
+                    w-[30vh]">
+                        {weatherData['hourly']['time'].map((time: number, 
+                        index: number) => (
+                            <li key={index} className="text-left text-sm w-full
+                             pr-5 py-1 cursor-default" >
+                                <div className="flex-col">
+                                    <h1>{time}</h1>
+                                    <h1>{Math.round(weatherData.hourly.temperature2m[index])}</h1>
+                                    <h1>{Math.round(weatherData.hourly.windSpeed10m[index])}</h1>
+                                    <h1>{weatherData.hourly.weatherCode[index]}</h1>
+                                    <h1>{Math.round(weatherData.hourly.uvIndex[index])}</h1>
+                                </div>
                             </li>
                         ))}
                     </ul>                
