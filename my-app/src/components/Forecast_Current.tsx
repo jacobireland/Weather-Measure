@@ -47,22 +47,27 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
     }
     
     return (
-        <div>
-            <h1 className="">
-                {weatherData ? 
-                    <h1>{Math.round(weatherData['hourly']
-                    ['temperature2m'][0])}°</h1>
-                : <h1>no data</h1>
-                }
-            </h1>
-            <h1 className="">
-                {weatherData ? 
-                    <h1>{Math.round(weatherData['hourly']
-                        ['apparentTemperature'][0])}°</h1>
-                : <h1>no data</h1>
-                }
-            </h1>
-            <h1 className="">
+        <div className="flex flex-col justify-center w-full ml-4">
+            <div className="flex flex-row mt-6 align-middle items-center">
+                <h1 className="text-9xl justify-center text-center">
+                    {weatherData ? 
+                        <h1>{Math.round(weatherData['hourly']
+                        ['temperature2m'][0])}°</h1>
+                    : <h1>no data</h1>
+                    }
+                </h1>
+                <div className="flex flex-col ml-[15rem] justify-top items-center">
+                    <h1 className="text-2xl font-light">Feels Like:</h1>
+                    <h1 className="text-5xl font-normal">
+                        {weatherData ? 
+                            <h1>{Math.round(weatherData['hourly']
+                                ['apparentTemperature'][0])}°</h1>
+                        : <h1>no data</h1>
+                        }
+                    </h1>
+                </div>
+            </div>
+            <h1 className="text-5xl">
                 {weatherData ? getWeatherString(weatherData['hourly']
                     ['weatherCode'][0])
                 : <h1>no data</h1>
@@ -83,15 +88,9 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
                 }
             </h1>
             <h1 className="">
-                {weatherData ? 
-                    <h1>{Math.round(weatherData['hourly']
-                    ['windSpeed10m'][0])}mph</h1>
-                : <h1>no data</h1>
-                }
-            </h1>
-            <h1 className="">
-                {weatherData ? getWindDirection(weatherData['hourly']
-                    ['windDirection10m'][0])
+                {weatherData ? <h1>{getWindDirection(weatherData['hourly']
+                    ['windDirection10m'][0])} {Math.round(weatherData['hourly']
+                        ['windSpeed10m'][0])}mph </h1>
                 : <h1>no data</h1>
                 }
             </h1>

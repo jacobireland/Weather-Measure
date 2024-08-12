@@ -63,6 +63,7 @@ const Home = (): JSX.Element => {
         else if (location.properties.coordinates.latitude === '') {
             console.log("Nothing selected, choosing first option")
             let tLoc = {properties:{name:options.features[0].properties.name,
+                full_address:options.features[0].properties.full_address,
                 coordinates:{latitude:options.features[0].properties.coordinates
                 .latitude, longitude:options.features[0].properties.coordinates.
                 longitude}

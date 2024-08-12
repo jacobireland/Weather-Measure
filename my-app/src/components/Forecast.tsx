@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Forecast_Current from "./Forecast_Current";
 import { weatherDataType } from "../types";
+import Forecast_Hourly from "./Forecast_Hourly";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
@@ -75,7 +76,7 @@ const Forecast = () : JSX.Element => {
     let name = 'New York City'
     let lat = 40.7127492
     let long = -74.0059945
-    let addr = 'New York City'
+    let address = 'New York City'
 
     // most of time, use inputted location for values
     const loc = useLocation()
@@ -83,7 +84,7 @@ const Forecast = () : JSX.Element => {
         name = loc.state.location.properties.name
         lat = loc.state.location.properties.coordinates.latitude
         long = loc.state.location.properties.coordinates.longitude
-        addr = loc.state.location.properties.full_address
+        address = loc.state.location.properties.full_address
     }
 
     // State for storing weather data
@@ -110,36 +111,15 @@ const Forecast = () : JSX.Element => {
     }, [lat, long]);
 
     return (
-        <div className="flex flex-col w-full max-w-[1000px] h-screen pl-[10px]
-        items-center border border-x-white">
-            <div className="flex-col">
-                <h1 className="">Today's Forecast</h1>
-                <h1 className="">{name}</h1>
-                <h1 className="">{addr}</h1>
+        <div className="flex flex-col w-full max-w-[1000px] h-screen p-[10px]
+        items-center">
+            <div className="flex-col w-full">
+                <h1 className="text-5xl font-medium">Today's Forecast</h1>
+                <h1 className="text-5xl font-normal ml-4 mt-4 mb-2">{name}</h1>
+                <span className="text-lg font-light ml-5">{address}</span>
                 <Forecast_Current weatherData={weatherData}/>
             </div>
-            <div>
-                <h1>
-                    {weatherData ? 
-                        <ul className="flex-col overflow-y-auto bg-none rounded-b-md 
-                        h-[30vh]">
-                            {weatherData['hourly']['time'].map((time: number, 
-                            index: number) => (
-                                <li key={index} className="flextext-left text-sm 
-                                w-full pr-5 py-1 cursor-default" >
-                                    <div className="flex flex-row space-x-3">
-                                        <h1>{time}:00</h1>
-                                        <h1>{Math.round(weatherData.hourly.temperature2m[index])}</h1>
-                                        <h1>{Math.round(weatherData.hourly.windSpeed10m[index])}</h1>
-                                        <h1>{weatherData.hourly.weatherCode[index]}</h1>
-                                        <h1>{Math.round(weatherData.hourly.uvIndex[index])}</h1>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>                
-                : <p>No data</p>}
-                </h1>
-            </div>
+            <Forecast_Hourly weatherData={weatherData}/>
         </div>
     )
 }
