@@ -6,13 +6,14 @@ import { features } from "process";
 
 const Home = (): JSX.Element => {
     const [location, setLocation] = useState<optionType>({properties:{name:'',
-        coordinates:{latitude:'', longitude:''}}})
+        full_address:'', coordinates:{latitude:'', longitude:''}}})
     const [options, setOptions] = useState<any>({features:[{properties:{name:'',
-        coordinates:{latitude:'', longitude:''}}}]})
+        full_address:'', coordinates:{latitude:'', longitude:''}}}]})
     
     // update location variable upon user input
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setLocation({properties:{name: `${e.target.value}`,
+        setLocation({properties:{name: `${e.target.value}`, 
+            full_address:`${e.target.value}`,
             coordinates:{latitude:'', longitude:''}}})
     }
 
@@ -45,10 +46,11 @@ const Home = (): JSX.Element => {
     // update location variable upon user selecting autofill option
     const onOptionSelect = (option:optionType) => {
         setLocation({properties:{name: option.properties.name,
+            full_address: option.properties.full_address,
             coordinates:{latitude:option.properties.coordinates.latitude,
             longitude:option.properties.coordinates.longitude}}})
         
-        setOptions({features:[{properties:{name:'',
+        setOptions({features:[{properties:{name:'', address:'',
             coordinates:{latitude:'', longitude:''}}}]})
     }
 
@@ -96,7 +98,7 @@ const Home = (): JSX.Element => {
             p-[5px] relative">
                 <input
                     type="text"
-                    value={location.properties.name}
+                    value={location.properties.full_address}
                     onChange={onInputChange}
                     onKeyDown={handleKeyDown}
                     className="h-[3vh] w-[60vw] md:max-w-[500px] z-auto pl-[4px]
@@ -112,7 +114,7 @@ const Home = (): JSX.Element => {
                                 cursor-pointer hover:text-white 
                                 hover:bg-slate-500 px-2 py-1" 
                                 onClick={() => onOptionSelect(option)}>
-                                    {option.properties.name}
+                                    {option.properties.full_address}
                                 </button>
                             </li>
                         ))}

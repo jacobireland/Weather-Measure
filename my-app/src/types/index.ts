@@ -1,11 +1,22 @@
 export type optionType = {
-    properties: {name:string, coordinates:{latitude:string, longitude:string}}
+    properties: {
+        name:string, full_address:string, 
+        coordinates: {
+            latitude:string, longitude:string
+        }
+    }
 }
 
-export type weatherInfoType = {
-    time: string[],
-    temp: number[],
-    wCode: number[],
-    wind: number[],
-    uv: number[]
+export type weatherDataType = {
+    hourly: {
+        time: number[],
+        temperature2m: number[],
+        relativeHumidity2m: number[],
+        apparentTemperature: number[],
+        precipitationProbability: number[],
+        weatherCode: number[],
+        windSpeed10m: number[],
+        windDirection10m: number[],
+        uvIndex: number[]
+    }
 }

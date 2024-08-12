@@ -6,6 +6,26 @@ npm install react-router-dom
 npm install @types/react-router-dom
 
 
+
+
+Hourly Variables:
+temp
+wcode
+precipitation prob
+wind dir
+wind speed
+humidity
+UV-index
+
+
+
+
+
+
+
+
+
+
 APIs:
 https://open-meteo.com/en/docs#current=&hourly=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,uv_index&daily=&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&past_days=1&forecast_days=1
 

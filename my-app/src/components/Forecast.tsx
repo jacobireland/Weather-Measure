@@ -1,8 +1,8 @@
 import { fetchWeatherApi } from "openmeteo";
 import { useLocation } from "react-router-dom";
-import { weatherInfoType } from "../types";
-import { time } from "console";
 import { useEffect, useState } from "react";
+import Forecast_Current from "./Forecast_Current";
+import { weatherDataType } from "../types";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
@@ -12,8 +12,9 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
     const params = {
         "latitude": lat,
         "longitude": long,
-        "hourly": ["temperature_2m", "weather_code", "wind_speed_10m", 
-            "uv_index"],
+        "hourly": ["temperature_2m", "relative_humidity_2m", 
+            "apparent_temperature", "precipitation_probability", 
+            "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index"],
         "temperature_unit": "fahrenheit",
         "wind_speed_unit": "mph",
         "precipitation_unit": "inch",
@@ -48,17 +49,24 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
                     (t) => new Date((t + utcOffsetSeconds) * 1000).getHours()
                 )),
                 temperature2m: Array.from(hourly.variables(0)!.valuesArray()!), // Convert Float32Array to Array
-                weatherCode: Array.from(hourly.variables(1)!.valuesArray()!),
-                windSpeed10m: Array.from(hourly.variables(2)!.valuesArray()!),
-                uvIndex: Array.from(hourly.variables(3)!.valuesArray()!)
+                relativeHumidity2m: Array.from(hourly.variables(1)!
+                    .valuesArray()!),
+                apparentTemperature: Array.from(hourly.variables(2)!
+                    .valuesArray()!),
+                precipitationProbability: Array.from(hourly.variables(3)!
+                    .valuesArray()!),
+                weatherCode: Array.from(hourly.variables(4)!.valuesArray()!),
+                windSpeed10m: Array.from(hourly.variables(5)!.valuesArray()!),
+                windDirection10m: Array.from(hourly.variables(6)!
+                    .valuesArray()!),
+                uvIndex: Array.from(hourly.variables(7)!.valuesArray()!)
             },
-
         };
 
 	} catch (error) {
 		console.error("Error fetching weather data:", error);
 	}
-
+    console.log(weatherData)
     return(weatherData)
 };
 
@@ -67,6 +75,7 @@ const Forecast = () : JSX.Element => {
     let name = 'New York City'
     let lat = 40.7127492
     let long = -74.0059945
+    let addr = 'New York City'
 
     // most of time, use inputted location for values
     const loc = useLocation()
@@ -74,10 +83,21 @@ const Forecast = () : JSX.Element => {
         name = loc.state.location.properties.name
         lat = loc.state.location.properties.coordinates.latitude
         long = loc.state.location.properties.coordinates.longitude
+        addr = loc.state.location.properties.full_address
     }
 
     // State for storing weather data
-    const [weatherData, setWeatherData] = useState<any>(null);
+    const [weatherData, setWeatherData] = useState<weatherDataType>({hourly: {
+        time: [],
+        temperature2m: [],
+        relativeHumidity2m: [],
+        apparentTemperature: [],
+        precipitationProbability: [],
+        weatherCode: [],
+        windSpeed10m: [],
+        windDirection10m: [],
+        uvIndex: []
+}});
 
     // Fetch weather data when component mounts
     useEffect(() => {
@@ -89,32 +109,37 @@ const Forecast = () : JSX.Element => {
         fetchData();
     }, [lat, long]);
 
-    console.log(weatherData)
-
     return (
-        <div>
-            <h1>Weather for {name}</h1>
-            <h1>Located at: {lat}, {long}</h1>
-            <h1>Data is: 
-                {weatherData ? 
-                    <ul className="flex overflow-x-auto bg-none rounded-b-md 
-                    w-[30vh]">
-                        {weatherData['hourly']['time'].map((time: number, 
-                        index: number) => (
-                            <li key={index} className="text-left text-sm w-full
-                             pr-5 py-1 cursor-default" >
-                                <div className="flex-col">
-                                    <h1>{time}</h1>
-                                    <h1>{Math.round(weatherData.hourly.temperature2m[index])}</h1>
-                                    <h1>{Math.round(weatherData.hourly.windSpeed10m[index])}</h1>
-                                    <h1>{weatherData.hourly.weatherCode[index]}</h1>
-                                    <h1>{Math.round(weatherData.hourly.uvIndex[index])}</h1>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>                
-            : <p>No data</p>}
-            </h1>
+        <div className="flex flex-col w-full max-w-[1000px] h-screen pl-[10px]
+        items-center border border-x-white">
+            <div className="flex-col">
+                <h1 className="">Today's Forecast</h1>
+                <h1 className="">{name}</h1>
+                <h1 className="">{addr}</h1>
+                <Forecast_Current weatherData={weatherData}/>
+            </div>
+            <div>
+                <h1>
+                    {weatherData ? 
+                        <ul className="flex-col overflow-y-auto bg-none rounded-b-md 
+                        h-[30vh]">
+                            {weatherData['hourly']['time'].map((time: number, 
+                            index: number) => (
+                                <li key={index} className="flextext-left text-sm 
+                                w-full pr-5 py-1 cursor-default" >
+                                    <div className="flex flex-row space-x-3">
+                                        <h1>{time}:00</h1>
+                                        <h1>{Math.round(weatherData.hourly.temperature2m[index])}</h1>
+                                        <h1>{Math.round(weatherData.hourly.windSpeed10m[index])}</h1>
+                                        <h1>{weatherData.hourly.weatherCode[index]}</h1>
+                                        <h1>{Math.round(weatherData.hourly.uvIndex[index])}</h1>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>                
+                : <p>No data</p>}
+                </h1>
+            </div>
         </div>
     )
 }
