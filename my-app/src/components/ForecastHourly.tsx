@@ -58,8 +58,7 @@ const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> =
                             w-full pr-5 py-1 cursor-default" >
                                 <div className="flex flex-row space-x-3">
                                     <h1>{time}:00</h1>
-                                    <h1>{Math.round(weatherData.hourly.
-                                        temperature2m[index])}°</h1>
+                                    <h1>{Math.round(weatherData.hourly.temperature2m[index])}°</h1>
                                     <h1>{getWeatherString(weatherData['hourly']
                                         ['weatherCode'][index])}</h1>
                                     <h1>{Math.round(weatherData.hourly.uvIndex

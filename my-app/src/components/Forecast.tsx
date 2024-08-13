@@ -1,9 +1,9 @@
 import { fetchWeatherApi } from "openmeteo";
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Forecast_Current from "./Forecast_Current";
+import ForecastCurrent from "./ForecastCurrent";
 import { weatherDataType } from "../types";
-import Forecast_Hourly from "./Forecast_Hourly";
+import ForecastHourly from "./ForecastHourly";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
@@ -98,7 +98,7 @@ const Forecast = () : JSX.Element => {
         windSpeed10m: [],
         windDirection10m: [],
         uvIndex: []
-}});
+    }});
 
     // Fetch weather data when component mounts
     useEffect(() => {
@@ -112,14 +112,14 @@ const Forecast = () : JSX.Element => {
 
     return (
         <div className="flex flex-col w-full max-w-[1000px] h-screen p-[10px]
-        items-center">
-            <div className="flex-col w-full">
+        items-center border">
+            <div className="flex-col w-full mb-[10rem]">
                 <h1 className="text-5xl font-medium">Today's Forecast</h1>
                 <h1 className="text-5xl font-normal ml-4 mt-4 mb-2">{name}</h1>
                 <span className="text-lg font-light ml-5">{address}</span>
-                <Forecast_Current weatherData={weatherData}/>
+                <ForecastCurrent weatherData={weatherData}/>
             </div>
-            <Forecast_Hourly weatherData={weatherData}/>
+            <ForecastHourly weatherData={weatherData}/>
         </div>
     )
 }

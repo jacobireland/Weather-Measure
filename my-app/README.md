@@ -4,6 +4,8 @@ npm install react-icons --save
 npm install openmeteo
 npm install react-router-dom
 npm install @types/react-router-dom
+npm install weather-icons-react --save
+npm i react-icons
 
 
 

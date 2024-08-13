@@ -2,7 +2,6 @@ import { CiSearch } from "react-icons/ci";
 import { useState, useEffect, ChangeEvent } from "react";
 import { optionType } from "../types";
 import { useNavigate } from 'react-router-dom';
-import { features } from "process";
 
 const Home = (): JSX.Element => {
     const [location, setLocation] = useState<optionType>({properties:{name:'',
@@ -64,9 +63,11 @@ const Home = (): JSX.Element => {
             console.log("Nothing selected, choosing first option")
             let tLoc = {properties:{name:options.features[0].properties.name,
                 full_address:options.features[0].properties.full_address,
-                coordinates:{latitude:options.features[0].properties.coordinates
-                .latitude, longitude:options.features[0].properties.coordinates.
-                longitude}
+                // eslint-disable-next-line
+                coordinates:{latitude:options.features[0].properties.
+                // eslint-disable-next-line
+                coordinates.latitude, longitude:options.features[0].
+                properties.coordinates.longitude}
             }}
             navigate('forecast', {state:{location:tLoc}})
         } else {

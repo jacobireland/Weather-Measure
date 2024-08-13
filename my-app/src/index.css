@@ -16,6 +16,12 @@ code {
     monospace;
 }
 
+h1 {
+    margin: 0px;
+   -webkit-margin-before: 0px;
+   -webkit-margin-after: 0px;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;
