@@ -113,10 +113,10 @@ const Forecast = () : JSX.Element => {
     return (
         <div className="flex flex-col w-full max-w-[1000px] h-screen p-[10px]
         items-center border">
-            <div className="flex-col w-full mb-[10rem]">
-                <h1 className="text-5xl font-medium">Today's Forecast</h1>
-                <h1 className="text-5xl font-normal ml-4 mt-4 mb-2">{name}</h1>
-                <span className="text-lg font-light ml-5">{address}</span>
+            <div className="flex-col w-full mb-[10rem] text-3xl md:text-5xl">
+                <h1 className="font-medium">Today's Forecast</h1>
+                <h1 className="font-normal ml-2 mt-2 mb-1 md:ml-4 md:mt-4 md:mb-3">{name}</h1>
+                <h1 className="text-sm ml-2 md:ml-4 md:text-lg font-light">{address}</h1>
                 <ForecastCurrent weatherData={weatherData}/>
             </div>
             <ForecastHourly weatherData={weatherData}/>

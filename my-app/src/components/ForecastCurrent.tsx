@@ -7,10 +7,11 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
     ({ weatherData }) => {
     
     return (
-        <div className="flex flex-row justify-center w-full mt-10 gap-[7rem]">
+        <div className="flex flex-row justify-center w-full mt-10 gap-[1rem]
+        md:gap-[4rem] lg:gap-[5rem]">
             <div className="flex flex-col w-fit">
                 <div className="flex flex-row w-full">
-                    <div className="text-9xl font-[400]">
+                    <div className="text-9xl md:text-8xl lg:text-9xl font-[400]">
                         {weatherData ? 
                             <div className="pb-3">
                                 {Math.round(weatherData['hourly']
@@ -21,14 +22,14 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
                         }
                     </div>
                 </div>
-                <div className="flex text-5xl w-full whitespace-nowrap">
+                <div className="flex text-5xl md:text-4xl lg:text-5xl w-full whitespace-nowrap">
                     {weatherData ? getWeatherString(weatherData['hourly']
                         ['weatherCode'][0])
                     : <h1>no data</h1>
                     }
                 </div>
             </div>
-            <div className="flex flex-col w-fit text-2xl pt-4 gap-1">
+            <div className="flex flex-col w-fit text-2xl md:text-xl lg:text-2xl pt-4 gap-1">
                 <div className="flex flex-row">
                     Feels Like:
                     <div className="ml-2">
@@ -62,7 +63,7 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col w-fit text-2xl justify-start pt-4">
+            <div className="flex flex-col w-fit text-2xl md:text-xl lg:text-2xl justify-start pt-4">
                 <div className="flex flex-row">
                     <WiRaindrops size={30} viewBox="10 7.5 10 11.5"/>
                     <div className="flex items-center ml-2">
