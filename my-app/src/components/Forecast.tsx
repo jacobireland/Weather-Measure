@@ -40,7 +40,7 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
         "precipitation_unit": "inch",
         "timezone": "auto",
         "forecast_days": 1,
-        "forecast_hours": 30
+        "forecast_hours": 24
     }
 
     let weatherData
@@ -54,22 +54,18 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
         
         // Process first location. Add a for-loop for multiple locations or weather models
         const response = responses[0];
-        
-        // Attributes for timezone and location
-        const utcOffsetSeconds = response.utcOffsetSeconds();
-        const timezone = response.timezone();
-        const timezoneAbbreviation = response.timezoneAbbreviation();
-        const latitude = response.latitude();
-        const longitude = response.longitude();
-        
+                
         const hourly = response.hourly()!;
+
+        console.log(hourly.time())
+        console.log(hourly.timeEnd())
         
         // Note: The order of weather variables in the URL query and the indices below need to match!
         // Generate the weather data as before
         weatherData = {
             hourly: {
                 time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
-                    (t) => new Date((t + utcOffsetSeconds) * 1000).getHours()
+                    (t) => new Date((t) * 1000).getHours()
                 ),
                 temperature2m: hourly.variables(0)!.valuesArray()!,
                 relativeHumidity2m: hourly.variables(1)!.valuesArray()!,
