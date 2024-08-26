@@ -1,75 +1,96 @@
 import { weatherDataType } from "../types";
+import { getWeatherIcon, getWeatherString, getWindDirection, specifiedDate } 
+    from "./utils";
+import { WiRaindrops, WiStrongWind } from "weather-icons-react";
+import { TbUvIndex } from "react-icons/tb"
 
 const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> = 
     ({ weatherData }) => {
-
-    const weatherCodeMap = new Map<number, string>([
-        [0, "Clear sky"],
-        [1, "Mostly clear"],
-        [2, "Partly cloudy"],
-        [3, "Overcast"],
-        [45, "Fog"],
-        [48, "Fog"],
-        [51, "Light Drizzle"],
-        [53, "Moderate Drizzle"],
-        [55, "Heavy Drizzle"],
-        [56, "Light Freezing Drizzle"],
-        [57, "Heavy Freezing Drizzle"],
-        [61, "Slight Rain"],
-        [63, "Moderate Rain"],
-        [65, "Heavy Rain"],
-        [66, "Light Freezing Rain"],
-        [67, "Heavy Freezing Rain"],
-        [71, "Light Snow"],
-        [73, "Moderate Snow"],
-        [75, "Heavy Snow"],
-        [77, "Snow grains"],
-        [80, "Light Rain Showers"],
-        [81, "Moderate Rain Showers"],
-        [82, "Violent Rain Showers"],
-        [85, "Light Snow Showers"],
-        [86, "Heavy Snow Showers"],
-        [95, "Thunderstorm"],
-        [96, "Thunderstorm Slight Hail"],
-        [99, "Thunderstorm Heavy Hail"]
-    ]);
     
-    const windDir = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S",
-        "SSW","SW","WSW","W","WNW","NW","NNW","N"]
+    let daySplit = 24-weatherData['hourly']['time'][0]
 
-    const getWeatherString = (code:number):string => {
-        return `${weatherCodeMap.get(code)}`
+    // Function to slice the data
+    function sliceWeatherData(data: weatherDataType, start: number, end: number)
+    : weatherDataType {
+        return {
+            hourly: {
+                time: data.hourly.time.slice(start, end),
+                temperature2m: data.hourly.temperature2m.slice(start, end ),
+                relativeHumidity2m: data.hourly.relativeHumidity2m.slice(start,
+                     end ),
+                apparentTemperature: data.hourly.apparentTemperature.slice(
+                    start, end),
+                precipitationProbability: data.hourly.precipitationProbability
+                .slice(start, end),
+                weatherCode: data.hourly.weatherCode.slice(start, end),
+                windSpeed10m: data.hourly.windSpeed10m.slice(start, end ),
+                windDirection10m: data.hourly.windDirection10m.slice(start, end
+                    ),
+                uvIndex: data.hourly.uvIndex.slice(start, end),
+            }
+        };
     }
 
-    const getWindDirection = (wind:number):string => {
-        let i = Math.floor(wind/(22.5) + .5)
-        return windDir[i]
-    }
-    
+    let date = new Date()
+
     return (
-        <div>
+        <div className="flex justify-center">
             <h1>
                 {weatherData ? 
                     <ul className="flex-col overflow-y-auto bg-none rounded-b-md 
-                    h-[30vh]">
-                        {weatherData['hourly']['time'].map((time: number, 
-                        index: number) => (
-                            <li key={index} className="flextext-left text-sm 
-                            w-full pr-5 py-1 cursor-default" >
+                    h-[40vh]">
+                        {weatherData['hourly']
+                        ['time'].map((time: number, index: number) => (
+                            <li key={index} className="flex flex-col text-xl
+                            w-full pr-5 pb-6 cursor-default rounded-md">
+                                {index === 0 ? 
+                                    <div className="font-medium text-2xl mb-4">
+                                        {specifiedDate(0)}
+                                    </div>
+                                : index === daySplit ?
+                                    <div className="font-medium mt-3 text-2xl
+                                    mb-4">
+                                        {specifiedDate(1)}
+                                    </div>
+                                : <h1></h1>
+                                }
                                 <div className="flex flex-row space-x-3">
-                                    <h1>{time}:00</h1>
-                                    <h1>{Math.round(weatherData.hourly.temperature2m[index])}°</h1>
-                                    <h1>{getWeatherString(weatherData['hourly']
+                                    <h1 className="font-light w-[60px]">
+                                        {time}:00</h1>
+                                    <div className="flex flex-row gap-1 
+                                    w-[140px]">
+                                        <h1 className="font-semibold m-0">
+                                            {Math.round(weatherData.hourly.
+                                            temperature2m[index])}°</h1>
+                                        <h1 className="font-light 
+                                        text-white/70">
+                                            / {Math.round(weatherData.hourly.
+                                            apparentTemperature[index])}°</h1>
+                                    </div>
+                                    <h1>{getWeatherIcon(weatherData['hourly']
+                                        ['weatherCode'][index], 30)}</h1>
+                                    <h1 className="w-[180px]">{getWeatherString(
+                                        weatherData['hourly']
                                         ['weatherCode'][index])}</h1>
-                                    <h1>{Math.round(weatherData.hourly.uvIndex
+                                    <TbUvIndex size={25}/>
+                                    <h1 className="w-[80px]">{Math.round(
+                                        weatherData.hourly.uvIndex
                                         [index])}</h1>
-                                    <h1>{Math.round(weatherData['hourly']
+                                    <WiRaindrops size={30} 
+                                    viewBox="10 7.5 10 11.5"/>
+                                    <h1 className="w-[70px]">{Math.round(
+                                        weatherData['hourly']
                                         ['precipitationProbability'][index])}
                                         %</h1>
-                                    <h1>{getWindDirection(weatherData['hourly']
-                                        ['windDirection10m'][index])}</h1>
-                                    <h1>{Math.round(weatherData['hourly']
+                                    <WiStrongWind size={30} 
+                                    viewBox="2.1 11 25 9"/>
+                                    <div className="flex flex-row gap-2">
+                                        <h1>{getWindDirection(weatherData
+                                        ['hourly'] ['windDirection10m'][index])}
+                                        </h1>
+                                        <h1>{Math.round(weatherData['hourly']
                                         ['windSpeed10m'][index])} mph</h1>
+                                    </div>
                                 </div>
                             </li>
                         ))}

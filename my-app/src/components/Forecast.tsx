@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ForecastCurrent from "./ForecastCurrent";
 import { weatherDataType } from "../types";
 import ForecastHourly from "./ForecastHourly";
+import { getWeatherIcon, specifiedDate } from "./utils";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
@@ -113,18 +114,31 @@ const Forecast = () : JSX.Element => {
     }, [lat, long]);
 
     return (
-        <div className="flex flex-col w-full max-w-[1000px] h-screen
-        text-center sm:text-left border text-white">
-            <div className="flex-col w-full mb-[10rem] text-3xl md:text-5xl
-             bg-black bg-opacity-25 px-4 pb-7 pt-2 rounded-lg">
-                <h1 className="font-light pb-2 sm:pb-0">Today's Forecast</h1>
-                <h1 className="font-medium ml-2 mt-2 mb-1 md:ml-4 md:mt-4 
-                    md:mb-3">{name}</h1>
-                <h1 className="text-sm ml-2 md:ml-4 md:text-lg font-light">
-                    {address}</h1>
+        <div className="relative flex flex-col w-full max-w-[1000px] h-screen
+        text-center sm:text-left text-white">
+            <div className="flex-col w-full mb-5 mt-4 text-3xl md:text-5xl
+             bg-black bg-opacity-15 px-4 pb-7 pt-2 rounded-lg">
+                <div className="flex flex-row">
+                    <div className="w-full">
+                        <h1 className="font-light pb-2 sm:pb-0">Current Forecast
+                        </h1>
+                        <h1 className="font-medium ml-2 mt-2 mb-1 md:ml-4 
+                        md:mt-4 md:mb-3">{name}</h1>
+                        <h1 className="text-sm ml-2 md:ml-4 md:text-lg 
+                        font-light">{address}</h1>
+                    </div>
+                    <div className="absolute top-4 right-0 opacity-40">
+                        {getWeatherIcon(weatherData['hourly']['weatherCode'][0],
+                             200)}
+                    </div>
+                </div>
                 <ForecastCurrent weatherData={weatherData}/>
             </div>
-            <ForecastHourly weatherData={weatherData}/>
+            <div className="flex flex-col w-full mb-10 text-3xl md:text-4xl
+            pl-4 pr-4">
+                <h1 className="font-light mb-5 sm:pb-0">Hourly Weather</h1>
+                <ForecastHourly weatherData={weatherData}/>
+            </div>
         </div>
     )
 }
