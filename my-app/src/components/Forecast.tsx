@@ -46,10 +46,12 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
         // indices below need to match!
         weatherData = {
             hourly: {
-                time: Array.from(range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
+                time: Array.from(range(Number(hourly.time()), 
+                Number(hourly.timeEnd()), hourly.interval()).map(
                     (t) => new Date((t + utcOffsetSeconds) * 1000).getHours()
                 )),
-                temperature2m: Array.from(hourly.variables(0)!.valuesArray()!), // Convert Float32Array to Array
+                temperature2m: Array.from(hourly.variables(0)!.valuesArray()!), 
+                // ^^ Convert Float32Array to Array
                 relativeHumidity2m: Array.from(hourly.variables(1)!
                     .valuesArray()!),
                 apparentTemperature: Array.from(hourly.variables(2)!
@@ -111,12 +113,15 @@ const Forecast = () : JSX.Element => {
     }, [lat, long]);
 
     return (
-        <div className="flex flex-col w-full max-w-[1000px] h-screen p-[10px]
-        items-center border">
-            <div className="flex-col w-full mb-[10rem] text-3xl md:text-5xl">
-                <h1 className="font-medium">Today's Forecast</h1>
-                <h1 className="font-normal ml-2 mt-2 mb-1 md:ml-4 md:mt-4 md:mb-3">{name}</h1>
-                <h1 className="text-sm ml-2 md:ml-4 md:text-lg font-light">{address}</h1>
+        <div className="flex flex-col w-full max-w-[1000px] h-screen
+        text-center sm:text-left border text-white">
+            <div className="flex-col w-full mb-[10rem] text-3xl md:text-5xl
+             bg-black bg-opacity-25 px-4 pb-7 pt-2 rounded-lg">
+                <h1 className="font-light pb-2 sm:pb-0">Today's Forecast</h1>
+                <h1 className="font-medium ml-2 mt-2 mb-1 md:ml-4 md:mt-4 
+                    md:mb-3">{name}</h1>
+                <h1 className="text-sm ml-2 md:ml-4 md:text-lg font-light">
+                    {address}</h1>
                 <ForecastCurrent weatherData={weatherData}/>
             </div>
             <ForecastHourly weatherData={weatherData}/>
