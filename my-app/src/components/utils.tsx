@@ -4,8 +4,6 @@ import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudy, WiCloudy, WiFog,
     WiThunderstorm } from "weather-icons-react";
 
 import { BiCloudLightRain } from "react-icons/bi";
-import { FiWind } from "react-icons/fi"
-import { useState } from "react";
 
 let weekDays = new Map<number, string>([
     [1, 'Monday'],
@@ -77,7 +75,7 @@ export function specifiedDate(day:number):string {
     let d = `${weekDays.get(date.getDay())}`
     let m = `${months.get(date.getMonth())}`
     let dt = `${date.getDate()}`
-    if (day == 1) {
+    if (day === 1) {
         let tomorrow = new Date(date)
         tomorrow.setDate(date.getDate() + 1)
         d = `${weekDays.get(tomorrow.getDay())}`
@@ -119,7 +117,6 @@ export function getWeatherIcon(code:number, wSize:number): JSX.Element {
         [99, <WiThunderstorm size={wSize}/>]
     ]);
 
-    console.log(code)
     return weatherIconMap.get(code) || <WiDaySunny size={wSize}/>;
 }
 

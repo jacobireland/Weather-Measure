@@ -9,30 +9,6 @@ const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> =
     
     let daySplit = 24-weatherData['hourly']['time'][0]
 
-    // Function to slice the data
-    function sliceWeatherData(data: weatherDataType, start: number, end: number)
-    : weatherDataType {
-        return {
-            hourly: {
-                time: data.hourly.time.slice(start, end),
-                temperature2m: data.hourly.temperature2m.slice(start, end ),
-                relativeHumidity2m: data.hourly.relativeHumidity2m.slice(start,
-                     end ),
-                apparentTemperature: data.hourly.apparentTemperature.slice(
-                    start, end),
-                precipitationProbability: data.hourly.precipitationProbability
-                .slice(start, end),
-                weatherCode: data.hourly.weatherCode.slice(start, end),
-                windSpeed10m: data.hourly.windSpeed10m.slice(start, end ),
-                windDirection10m: data.hourly.windDirection10m.slice(start, end
-                    ),
-                uvIndex: data.hourly.uvIndex.slice(start, end),
-            }
-        };
-    }
-
-    let date = new Date()
-
     return (
         <div className="flex justify-center">
             <h1>
@@ -52,7 +28,7 @@ const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> =
                                     mb-4">
                                         {specifiedDate(1)}
                                     </div>
-                                : <h1></h1>
+                                : <div></div>
                                 }
                                 <div className="flex flex-row space-x-3">
                                     <h1 className="font-light w-[60px]">
@@ -60,12 +36,12 @@ const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> =
                                     <div className="flex flex-row gap-1 
                                     w-[140px]">
                                         <h1 className="font-semibold m-0">
-                                            {Math.round(weatherData.hourly.
-                                            temperature2m[index])}°</h1>
+                                            {Math.round(weatherData.hourly
+                                            .temperature2m[index])}°</h1>
                                         <h1 className="font-light 
                                         text-white/70">
-                                            / {Math.round(weatherData.hourly.
-                                            apparentTemperature[index])}°</h1>
+                                            / {Math.round(weatherData.hourly
+                                            .apparentTemperature[index])}°</h1>
                                     </div>
                                     <h1>{getWeatherIcon(weatherData['hourly']
                                         ['weatherCode'][index], 30)}</h1>
@@ -86,7 +62,7 @@ const Forecast_Hourly: React.FC<{ weatherData: weatherDataType }> =
                                     viewBox="2.1 11 25 9"/>
                                     <div className="flex flex-row gap-2">
                                         <h1>{getWindDirection(weatherData
-                                        ['hourly'] ['windDirection10m'][index])}
+                                        ['hourly']['windDirection10m'][index])}
                                         </h1>
                                         <h1>{Math.round(weatherData['hourly']
                                         ['windSpeed10m'][index])} mph</h1>

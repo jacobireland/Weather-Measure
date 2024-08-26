@@ -84,8 +84,8 @@ const Home = (): JSX.Element => {
     }
     
     return (
-        <section className="flex flex-col w-full max-w-[350px] md:max-w-[700px]
-        xl:max-w-[800px] h-full justify-center items-center
+        <div className="flex flex-col w-full h-screen max-w-[350px] md:max-w-[700px]
+        xl:max-w-[800px] justify-center items-center
         text-center px-[4vh]">
             <h1 className="text-neutral-100 text-[2.5rem]/8 
             md:text-[5rem]/[4.5rem] 2xl:text-[6rem] text-center font-light">
@@ -96,14 +96,14 @@ const Home = (): JSX.Element => {
                 Enter a location to see the current weather forecast, and
                 how it's changed over the years.
             </p>
-            <div className="flex flex-row items-center bg-white rounded
+            <div className="flex flex-row h-fit items-center bg-white rounded
             p-[5px] relative">
                 <input
                     type="text"
                     value={location.properties.full_address}
                     onChange={onInputChange}
                     onKeyDown={handleKeyDown}
-                    className="h-[3vh] w-[60vw] md:max-w-[500px] z-auto pl-[4px]
+                    className="h-[5vh] w-[60vw] md:max-w-[500px] z-auto pl-[4px]
                     mr-[4px]"
                 />
                 {location.properties.name.trim() ?
@@ -128,7 +128,7 @@ const Home = (): JSX.Element => {
                     onSearchEnter()}/>
                 </button>
             </div>
-        </section>
+        </div>
     )
 }
   

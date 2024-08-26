@@ -4,53 +4,14 @@ import { useEffect, useState } from "react";
 import ForecastCurrent from "./ForecastCurrent";
 import { weatherDataType } from "../types";
 import ForecastHourly from "./ForecastHourly";
-import { getWeatherIcon, specifiedDate } from "./utils";
+import { getWeatherIcon } from "./utils";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
 // fetch weather data from API using user-selected location
 // code for this function was taken from OpenMeteo Weather Forecast API docs
-async function getWeatherData(lat:Number, long:Number):Promise<any> {
-    const params = {
-        "latitude": lat,
-        "longitude": long,
-        "hourly": ["temperature_2m", "relative_humidity_2m", 
-            "apparent_temperature", "precipitation_probability", 
-            "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index"],
-        "temperature_unit": "fahrenheit",
-        "wind_speed_unit": "mph",
-        "precipitation_unit": "inch",
-        "past_hours": 0,
-        "forecast_hours": 25
-    };
 
-    let weatherData
-
-	try {
-		const responses = await fetchWeatherApi(url, params);
-        const response = responses[0]
-
-		// Attributes for timezone and location
-        const utcOffsetSeconds = response.utcOffsetSeconds();
-        const hourly = response.hourly()!;
-
-		if (!hourly) {
-			throw new Error("Hourly data is missing in the response");
-		}
-
-		// Helper function to form time ranges
-        const range = (start: number, stop: number, step: number) =>
-            Array.from({ length: (stop - start) / step }, (_, i) => start + i * 
-                       step);
-
-		// Note: The order of weather variables in the URL query and the
-        // indices below need to match!
-        weatherData = {
-            hourly: {
-                time: Array.from(range(Number(hourly.time()), 
-                Number(hourly.timeEnd()), hourly.interval()).map(
-                    (t) => new Date((t + utcOffsetSeconds) * 1000).getHours()
-                )),
+/*
                 temperature2m: Array.from(hourly.variables(0)!.valuesArray()!), 
                 // ^^ Convert Float32Array to Array
                 relativeHumidity2m: Array.from(hourly.variables(1)!
@@ -64,13 +25,87 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
                 windDirection10m: Array.from(hourly.variables(6)!
                     .valuesArray()!),
                 uvIndex: Array.from(hourly.variables(7)!.valuesArray()!)
+                */
+
+async function getWeatherData(lat:Number, long:Number):Promise<any> {
+
+    const url = "https://api.open-meteo.com/v1/forecast";
+
+    const params = {
+        "latitude": 40.7127492,
+        "longitude": -74.0059945,
+        "hourly": ["temperature_2m", "relative_humidity_2m", "apparent_temperature", "precipitation_probability", "weather_code", "wind_speed_10m", "wind_direction_10m", "uv_index"],
+        "temperature_unit": "fahrenheit",
+        "wind_speed_unit": "mph",
+        "precipitation_unit": "inch",
+        "timezone": "auto",
+        "forecast_days": 1,
+        "forecast_hours": 30
+    }
+
+    let weatherData
+
+    try {
+        const responses = await fetchWeatherApi(url, params);
+        
+        // Helper function to form time ranges
+        const range = (start: number, stop: number, step: number) =>
+            Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+        
+        // Process first location. Add a for-loop for multiple locations or weather models
+        const response = responses[0];
+        
+        // Attributes for timezone and location
+        const utcOffsetSeconds = response.utcOffsetSeconds();
+        const timezone = response.timezone();
+        const timezoneAbbreviation = response.timezoneAbbreviation();
+        const latitude = response.latitude();
+        const longitude = response.longitude();
+        
+        const hourly = response.hourly()!;
+        
+        // Note: The order of weather variables in the URL query and the indices below need to match!
+        // Generate the weather data as before
+        weatherData = {
+            hourly: {
+                time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
+                    (t) => new Date((t + utcOffsetSeconds) * 1000).getHours()
+                ),
+                temperature2m: hourly.variables(0)!.valuesArray()!,
+                relativeHumidity2m: hourly.variables(1)!.valuesArray()!,
+                apparentTemperature: hourly.variables(2)!.valuesArray()!,
+                precipitationProbability: hourly.variables(3)!.valuesArray()!,
+                weatherCode: hourly.variables(4)!.valuesArray()!,
+                windSpeed10m: hourly.variables(5)!.valuesArray()!,
+                windDirection10m: hourly.variables(6)!.valuesArray()!,
+                uvIndex: hourly.variables(7)!.valuesArray()!,
             },
         };
 
-	} catch (error) {
-		console.error("Error fetching weather data:", error);
-	}
-    console.log(weatherData)
+// Now weatherData contains only data starting from the 6th value
+
+        
+        
+        /* `weatherData` now contains a simple structure with arrays for datetime and weather data
+        for (let i = 0; i < weatherData.hourly.time.length; i++) {
+            console.log(
+                weatherData.hourly.time[i].toISOString(),
+                weatherData.hourly.temperature2m[i],
+                weatherData.hourly.relativeHumidity2m[i],
+                weatherData.hourly.apparentTemperature[i],
+                weatherData.hourly.precipitationProbability[i],
+                weatherData.hourly.weatherCode[i],
+                weatherData.hourly.windSpeed10m[i],
+                weatherData.hourly.windDirection10m[i],
+                weatherData.hourly.uvIndex[i]
+            );
+        }
+        */
+    }
+    catch {
+        console.log('FAILL')
+    }
+    console.log('weatherData: ', weatherData)
     return(weatherData)
 };
 
@@ -80,6 +115,8 @@ const Forecast = () : JSX.Element => {
     let lat = 40.7127492
     let long = -74.0059945
     let address = 'New York City'
+
+    console.log(lat, long)
 
     // most of time, use inputted location for values
     const loc = useLocation()
@@ -114,9 +151,9 @@ const Forecast = () : JSX.Element => {
     }, [lat, long]);
 
     return (
-        <div className="relative flex flex-col w-full max-w-[1000px] h-screen
+        <div className="relative flex flex-col w-full max-w-[1000px] h-full
         text-center sm:text-left text-white">
-            <div className="flex-col w-full mb-5 mt-4 text-3xl md:text-5xl
+            <div className="flex-col w-full mb-5 mt-4 text-3xl md:text-4xl
              bg-black bg-opacity-15 px-4 pb-7 pt-2 rounded-lg">
                 <div className="flex flex-row">
                     <div className="w-full">
@@ -127,7 +164,7 @@ const Forecast = () : JSX.Element => {
                         <h1 className="text-sm ml-2 md:ml-4 md:text-lg 
                         font-light">{address}</h1>
                     </div>
-                    <div className="absolute top-4 right-0 opacity-40">
+                    <div className="absolute top-0 right-1 opacity-40">
                         {getWeatherIcon(weatherData['hourly']['weatherCode'][0],
                              200)}
                     </div>
