@@ -85,36 +85,38 @@ export function specifiedDate(day:number):string {
     return `${d}, ${m} ${dt}`
 }
 
+let commonViewBox = "7 3 15 23"
+
 export function getWeatherIcon(code:number, wSize:number): JSX.Element {
     let weatherIconMap = new Map<number, JSX.Element>([
-        [0, <WiDaySunny size={wSize}/>],
-        [1, <WiDaySunnyOvercast size={wSize}/>],
-        [2, <WiDayCloudy size={wSize}/>],
-        [3, <WiCloudy size={wSize}/>],
-        [45, <WiFog size={wSize}/>],
-        [48, <WiFog size={wSize}/>],
-        [51, <WiDayRainMix size={wSize}/>],
-        [53, <WiDayRain size={wSize}/>],
-        [55, <WiDayRain size={wSize}/>],
-        [56, <WiDayHail size={wSize}/>],
-        [57, <WiHail size={wSize}/>],
-        [61, <WiRainMix size={wSize}/>],
-        [63, <BiCloudLightRain size={wSize}/>],
-        [65, <WiRain size={wSize}/>],
-        [66, <WiDayHail size={wSize}/>],
-        [67, <WiHail size={wSize}/>],
-        [71, <WiDaySnow size={wSize}/>],
-        [73, <WiSnow size={wSize}/>],
-        [75, <WiSnowWind size={wSize}/>],
-        [77, <WiDaySnow size={wSize}/>],
-        [80, <WiDayShowers size={wSize}/>],
-        [81, <WiShowers size={wSize}/>],
-        [82, <WiStormShowers size={wSize}/>],
-        [85, <WiDaySnow size={wSize}/>],
-        [86, <WiSnow size={wSize}/>],
-        [95, <WiThunderstorm size={wSize}/>],
-        [96, <WiThunderstorm size={wSize}/>],
-        [99, <WiThunderstorm size={wSize}/>]
+        [0, <WiDaySunny size={wSize} viewBox={commonViewBox}/>],
+        [1, <WiDaySunnyOvercast size={wSize} viewBox={commonViewBox}/>],
+        [2, <WiDayCloudy size={wSize} viewBox={commonViewBox}/>],
+        [3, <WiCloudy size={wSize} viewBox={commonViewBox}/>],
+        [45, <WiFog size={wSize} viewBox={commonViewBox}/>],
+        [48, <WiFog size={wSize} viewBox={commonViewBox}/>],
+        [51, <WiDayRainMix size={wSize} viewBox={commonViewBox}/>],
+        [53, <WiDayRain size={wSize} viewBox={commonViewBox}/>],
+        [55, <WiDayRain size={wSize} viewBox={commonViewBox}/>],
+        [56, <WiDayHail size={wSize} viewBox={commonViewBox}/>],
+        [57, <WiHail size={wSize} viewBox={commonViewBox}/>],
+        [61, <WiRainMix size={wSize} viewBox={commonViewBox}/>],
+        [63, <BiCloudLightRain size={wSize} viewBox={commonViewBox}/>],
+        [65, <WiRain size={wSize} viewBox={commonViewBox}/>],
+        [66, <WiDayHail size={wSize} viewBox={commonViewBox}/>],
+        [67, <WiHail size={wSize} viewBox={commonViewBox}/>],
+        [71, <WiDaySnow size={wSize} viewBox={commonViewBox}/>],
+        [73, <WiSnow size={wSize} viewBox={commonViewBox}/>],
+        [75, <WiSnowWind size={wSize} viewBox={commonViewBox}/>],
+        [77, <WiDaySnow size={wSize} viewBox={commonViewBox}/>],
+        [80, <WiDayShowers size={wSize} viewBox={commonViewBox}/>],
+        [81, <WiShowers size={wSize} viewBox={commonViewBox}/>],
+        [82, <WiStormShowers size={wSize} viewBox={commonViewBox}/>],
+        [85, <WiDaySnow size={wSize} viewBox={commonViewBox}/>],
+        [86, <WiSnow size={wSize} viewBox={commonViewBox}/>],
+        [95, <WiThunderstorm size={wSize} viewBox={commonViewBox}/>],
+        [96, <WiThunderstorm size={wSize} viewBox={commonViewBox}/>],
+        [99, <WiThunderstorm size={wSize} viewBox={commonViewBox}/>]
     ]);
 
     return weatherIconMap.get(code) || <WiDaySunny size={wSize}/>;

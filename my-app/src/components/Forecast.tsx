@@ -78,28 +78,9 @@ async function getWeatherData(lat:Number, long:Number):Promise<any> {
             },
         };
 
-// Now weatherData contains only data starting from the 6th value
-
-        
-        
-        /* `weatherData` now contains a simple structure with arrays for datetime and weather data
-        for (let i = 0; i < weatherData.hourly.time.length; i++) {
-            console.log(
-                weatherData.hourly.time[i].toISOString(),
-                weatherData.hourly.temperature2m[i],
-                weatherData.hourly.relativeHumidity2m[i],
-                weatherData.hourly.apparentTemperature[i],
-                weatherData.hourly.precipitationProbability[i],
-                weatherData.hourly.weatherCode[i],
-                weatherData.hourly.windSpeed10m[i],
-                weatherData.hourly.windDirection10m[i],
-                weatherData.hourly.uvIndex[i]
-            );
-        }
-        */
     }
     catch {
-        console.log('FAILL')
+        console.log('Error fetching weather data')
     }
     console.log('weatherData: ', weatherData)
     return(weatherData)
@@ -160,9 +141,9 @@ const Forecast = () : JSX.Element => {
                         <h1 className="text-sm ml-2 md:ml-4 md:text-lg 
                         font-light">{address}</h1>
                     </div>
-                    <div className="absolute top-0 right-1 opacity-40">
+                    <div className="absolute mt-3 top-4 right-4 opacity-40">
                         {getWeatherIcon(weatherData['hourly']['weatherCode'][0],
-                             200)}
+                             150)}
                     </div>
                 </div>
                 <ForecastCurrent weatherData={weatherData}/>
