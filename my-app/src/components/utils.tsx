@@ -90,8 +90,8 @@ let commonViewBox = "7 3 15 23"
 export function getWeatherIcon(code:number, wSize:number): JSX.Element {
     let weatherIconMap = new Map<number, JSX.Element>([
         [0, <WiDaySunny size={wSize} viewBox={commonViewBox}/>],
-        [1, <WiDaySunnyOvercast size={wSize} viewBox={commonViewBox}/>],
-        [2, <WiDayCloudy size={wSize} viewBox={commonViewBox}/>],
+        [1, <WiDaySunnyOvercast size={wSize} viewBox="9 0 12 25"/>],
+        [2, <WiDayCloudy size={wSize} viewBox="9 -1 12 28"/>],
         [3, <WiCloudy size={wSize} viewBox={commonViewBox}/>],
         [45, <WiFog size={wSize} viewBox={commonViewBox}/>],
         [48, <WiFog size={wSize} viewBox={commonViewBox}/>],
@@ -124,6 +124,7 @@ export function getWeatherIcon(code:number, wSize:number): JSX.Element {
 
 //convert wind degrees direction to compass direction
 export function getWindDirection(wind:number):string {
-    let i = Math.floor(wind/(22.5) + .5)
+    console.log('here:', wind%360)
+    let i = Math.round((wind%360)/(22.5))
     return windDir[i]
 }
