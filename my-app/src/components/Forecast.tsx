@@ -108,29 +108,30 @@ const Forecast = () : JSX.Element => {
     }, [lat, long]);
 
     return (
-        <div className="relative flex flex-col w-full max-w-[1000px] h-full
-        text-center sm:text-left text-white">
-            <div className="flex-col w-full mb-5 mt-4 text-3xl md:text-4xl
-             bg-black bg-opacity-15 px-4 pb-7 pt-2 rounded-lg">
+        <div className="relative flex flex-col w-full max-w-[1000px] h-fit
+        min-h-screen text-left text-white">
+            <div className="flex-col w-full mb-3 mt-4 text-xl md:text-2xl
+             bg-black bg-opacity-15 px-4 pt-2 rounded-lg">
                 <div className="flex flex-row">
                     <div className="w-full">
                         <h1 className="font-light pb-2 sm:pb-0">Current Forecast
                         </h1>
-                        <h1 className="font-medium ml-2 mt-2 mb-1 md:ml-4 
-                        md:mt-4 md:mb-3">{name}</h1>
-                        <h1 className="text-sm ml-2 md:ml-4 md:text-lg 
+                        <h1 className="font-medium ml-2 mt-0 mb-1 md:ml-4 
+                        md:mt-2 md:mb-1">{name}</h1>
+                        <h1 className="text-sm ml-2 md:ml-4 md:text-md 
                         font-light">{address}</h1>
                     </div>
-                    <div className="absolute mt-3 top-4 right-4 opacity-40">
+                    <div className="absolute sm:mt-3 top-4 right-1 sm:right-4 opacity-40 
+                    scale-75 sm:scale-100">
                         {getWeatherIcon(weatherData['hourly']['weatherCode'][0],
-                             150)}
+                             110)}
                     </div>
                 </div>
                 <ForecastCurrent weatherData={weatherData}/>
             </div>
-            <div className="flex flex-col w-full mb-10 text-3xl md:text-4xl
+            <div className="flex flex-col w-full mb-10 text-xl md:text-2xl
             pl-4 pr-4">
-                <h1 className="font-light mb-5 sm:pb-0">Hourly Weather</h1>
+                <h1 className="font-light sm:mb-2 sm:pb-0">Hourly Weather</h1>
                 <ForecastHourly weatherData={weatherData}/>
             </div>
         </div>

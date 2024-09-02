@@ -6,13 +6,13 @@ import { WiDaySunny, WiDaySunnyOvercast, WiDayCloudy, WiCloudy, WiFog,
 import { BiCloudLightRain } from "react-icons/bi";
 
 let weekDays = new Map<number, string>([
+    [0, 'Sunday'],
     [1, 'Monday'],
     [2, 'Tuesday'],
     [3, 'Wednesday'],
     [4, 'Thursday'],
     [5, 'Friday'],
-    [6, 'Saturday'],
-    [7, 'Sunday']
+    [6, 'Saturday']
 ])
 
 let months = new Map<number, string>([
@@ -29,8 +29,6 @@ let months = new Map<number, string>([
     [11, 'November'],
     [12, 'December']
 ])
-
-let date = new Date()
 
 const weatherCodeMap = new Map<number, string>([
     [0, "Clear sky"],
@@ -72,6 +70,7 @@ export function getWeatherString(code:number):string {
 }
 
 export function specifiedDate(day:number):string {
+    let date = new Date()
     let d = `${weekDays.get(date.getDay())}`
     let m = `${months.get(date.getMonth())}`
     let dt = `${date.getDate()}`
@@ -124,7 +123,6 @@ export function getWeatherIcon(code:number, wSize:number): JSX.Element {
 
 //convert wind degrees direction to compass direction
 export function getWindDirection(wind:number):string {
-    console.log('here:', wind%360)
     let i = Math.round((wind%360)/(22.5))
     return windDir[i]
 }
