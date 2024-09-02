@@ -8,7 +8,7 @@ const Forecast_Current: React.FC<{ weatherData: weatherDataType }> =
     
     return (
         <div className="flex flex-row items-center sm:items-left sm:flex-row 
-        justify-center w-full mt-2 mb-5 gap-12 md:gap-[7rem] lg:gap-[10rem]
+        justify-center w-full mt-2 mb-5 gap-9 md:gap-[7rem] lg:gap-[10rem]
         font-light">
             <div className="flex flex-col align-center w-fit">
                 <div className="flex flex-row w-full justify-center">

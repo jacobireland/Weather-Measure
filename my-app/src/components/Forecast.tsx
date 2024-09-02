@@ -110,7 +110,7 @@ const Forecast = () : JSX.Element => {
     return (
         <div className="relative flex flex-col w-full max-w-[1000px] h-fit
         min-h-screen text-left text-white">
-            <div className="flex-col w-full mb-3 mt-4 text-xl md:text-2xl
+            <div className="flex-col w-full mb-3 sm:mt-4 text-xl md:text-2xl
              bg-black bg-opacity-15 px-4 pt-2 rounded-lg">
                 <div className="flex flex-row">
                     <div className="w-full">
@@ -121,8 +121,8 @@ const Forecast = () : JSX.Element => {
                         <h1 className="text-sm ml-2 md:ml-4 md:text-md 
                         font-light">{address}</h1>
                     </div>
-                    <div className="absolute sm:mt-3 top-4 right-1 sm:right-4 opacity-40 
-                    scale-75 sm:scale-100">
+                    <div className="absolute sm:mt-3 top-[-1px] sm:top-4 
+                    right-1 sm:right-4 opacity-40 scale-75 sm:scale-100">
                         {getWeatherIcon(weatherData['hourly']['weatherCode'][0],
                              110)}
                     </div>
@@ -130,7 +130,7 @@ const Forecast = () : JSX.Element => {
                 <ForecastCurrent weatherData={weatherData}/>
             </div>
             <div className="flex flex-col w-full mb-10 text-xl md:text-2xl
-            pl-4 pr-4">
+            pl-4 pr-2">
                 <h1 className="font-light sm:mb-2 sm:pb-0">Hourly Weather</h1>
                 <ForecastHourly weatherData={weatherData}/>
             </div>
